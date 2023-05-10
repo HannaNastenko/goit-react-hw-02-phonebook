@@ -4,27 +4,21 @@ import { ContactForm } from '../components/ContactForm';
 import { Filter } from '../components/Filter';
 import { ContactList } from '../components/ContactList';
 
-
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
-
-  changeFilter = e => {
+  handleChangeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
 
+  handleAddContact = ({ name, number }) => {
+    const uniqueId = nanoid();
 
-  addContact = ({ name, number }) => {
     const contact = {
-      id: nanoid(),
+      id: uniqueId,
       name,
       number,
     };
@@ -34,6 +28,19 @@ export class App extends Component {
     }));
   };
 
+  handleCheckUnique = name => {
+    const { contacts } = this.state;
+
+    const isExistContact = contacts.find(contact => contact.name === name);
+
+    return isExistContact;
+  };
+
+  handleRemoveContact = id => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(contact => contact.id !== id),
+    }));
+  };
 
   getVisibleContacts = () => {
     const { filter, contacts } = this.state;
@@ -43,22 +50,26 @@ export class App extends Component {
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizeFilter)
     );
-
-  }
+  };
 
   render() {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
-    const addContact = this.addContact;
-    const changeFilter = this.changeFilter;
-    
+    const addContact = this.handleAddContact;
+    const changeFilter = this.handleChangeFilter;
+    const checkUnique = this.handleCheckUnique;
+    const removeContact = this.handleRemoveContact;
+
     return (
       <div>
         <h1>Phonebook</h1>
-        <ContactForm addContact={addContact} />
+        <ContactForm addContact={addContact} onCheck={checkUnique} />
         <h2>Contacts</h2>
         <Filter value={filter} onFilterChange={changeFilter} />
-        <ContactList visibleContacts={visibleContacts} />
+        <ContactList
+          visibleContacts={visibleContacts}
+          onRemove={removeContact}
+        />
       </div>
     );
   }

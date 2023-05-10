@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export class ContactListEl extends Component {
   render() {
-    const { contact } = this.props;
-    const { id, name, number } = contact;
+    const { contact, onRemove } = this.props;
+    const {id, name, number } = contact;
     return (
       <li key={id}>
-        <p>
           {name}: {number}
-        </p>
+        <button type="button" onClick={() => onRemove(id)}>
+          Delete
+        </button>
       </li>
     );
   }
 }
+
+ContactListEl.propTypes = {
+  contact: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }).isRequired,
+
+  onRemove: PropTypes.func.isRequired,
+};

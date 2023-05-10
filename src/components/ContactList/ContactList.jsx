@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ContactListEl } from '../ContactListEl';
+import css from './ContactList.module.css'
 
 export class ContactList extends Component {
   render() {
     const { visibleContacts, onRemove } = this.props;
-    console.log(visibleContacts)
+    
     return (
-      <ul>
+      <ul className={css.list}>
         {visibleContacts.map(visibleContact => (
-          <ContactListEl contact={visibleContact} onRemove={onRemove}/>
+          <ContactListEl contact={visibleContact} onRemove={onRemove} key={visibleContact.id}/>
         ))}
       </ul>
     );

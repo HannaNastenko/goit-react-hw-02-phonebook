@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './ContactListEl.module.css'
 
 export class ContactListEl extends Component {
   render() {
-    const { contact, onRemove } = this.props;
+    const {contact, onRemove } = this.props;
     const {id, name, number } = contact;
     return (
-      <li key={id}>
+      <li className={css.item}>
+        <p className={css.text}>
           {name}: {number}
-        <button type="button" onClick={() => onRemove(id)}>
+        </p>
+        <button type="button" onClick={() => onRemove(id)} className={css.button}>
           Delete
         </button>
       </li>

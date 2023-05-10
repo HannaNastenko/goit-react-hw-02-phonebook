@@ -15,10 +15,8 @@ export class App extends Component {
   };
 
   handleAddContact = ({ name, number }) => {
-    const uniqueId = nanoid();
-
     const contact = {
-      id: uniqueId,
+      id: nanoid(),
       name,
       number,
     };
@@ -61,7 +59,7 @@ export class App extends Component {
     const removeContact = this.handleRemoveContact;
 
     return (
-      <div>
+      <div className='container'>
         <h1>Phonebook</h1>
         <ContactForm addContact={addContact} onCheck={checkUnique} />
         <h2>Contacts</h2>
